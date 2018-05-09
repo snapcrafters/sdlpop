@@ -1,0 +1,48 @@
+name: sdlpop
+version: master
+version-script: git -C parts/sdlpop/build describe --tags
+summary: SDLPoP
+description: |
+  An open-source port of Prince of Persia, based on the disassembly of the 
+  DOS version.
+
+grade: stable
+confinement: strict
+
+apps:
+  sdlpop:
+    command: desktop-launch $SNAP/prince
+    plugs:
+      - unity7
+      - network
+      - network-bind
+      - home
+      - opengl
+      - pulseaudio
+      - screen-inhibit-control
+
+parts:
+  sdlpop:
+    after: [desktop-glib-only]
+    plugin: make
+    source: https://github.com/NagyD/SDLPoP.git
+    source-type: git
+    source-subdir: src
+    source-tag: "v1.18.1"
+    build-packages:
+      - libsdl2-image-dev
+    stage-packages:
+      - libgl1-mesa-dri
+      - libgl1-mesa-glx
+      - libglu1-mesa
+    prepare: |
+      last_committed_tag="$(git describe --tags --abbrev=0)"
+      last_released_tag="$(snap info sdlpop | awk '$1 == "beta:" { print $2 }')"
+      # If the latest tag from the upstream project has not been released to
+      # beta, build that tag instead of master.
+      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
+        git fetch
+        git checkout "${last_committed_tag}"
+      fi
+    install: |
+      cp -a * $SNAPCRAFT_PART_INSTALL/
