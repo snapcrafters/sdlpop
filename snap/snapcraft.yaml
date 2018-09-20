@@ -28,7 +28,6 @@ parts:
     source: https://github.com/NagyD/SDLPoP.git
     source-type: git
     source-subdir: src
-    source-tag: "v1.18.1"
     build-packages:
       - libsdl2-image-dev
     stage-packages:
