@@ -23,7 +23,7 @@ apps:
 
 parts:
   sdlpop:
-    after: [desktop-glib-only]
+    after: [desktop-glib-only, patches]
     plugin: make
     source: https://github.com/NagyD/SDLPoP.git
     source-type: git
@@ -35,7 +35,9 @@ parts:
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
-    override-build: |
+    override-pull: |
+      snapcraftctl pull
+
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag="$(snap info sdlpop | awk '$1 == "beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
@@ -44,5 +46,13 @@ parts:
         git fetch
         git checkout "${last_committed_tag}"
       fi
+
+      git apply $SNAPCRAFT_STAGE/install.patch
+    override-build: |
       snapcraftctl build
       cp -a * $SNAPCRAFT_PART_INSTALL/
+
+  patches:
+    plugin: dump
+    source: patches
+    prime: [-*]
