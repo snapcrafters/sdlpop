@@ -1,10 +1,9 @@
 name: sdlpop
-version: master
-version-script: git -C parts/sdlpop/build describe --tags
 summary: SDLPoP
 description: |
   An open-source port of Prince of Persia, based on the disassembly of the 
   DOS version.
+adopt-info: sdlpop
 
 grade: stable
 confinement: strict
@@ -45,7 +44,7 @@ parts:
         git fetch
         git checkout "${last_committed_tag}"
       fi
-
+      snapcraftctl set-version "$(git describe --tags)"
       git apply $SNAPCRAFT_STAGE/install.patch
     override-build: |
       snapcraftctl build
