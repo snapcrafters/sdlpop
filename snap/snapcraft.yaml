@@ -1,4 +1,4 @@
-base: core
+base: core18
 name: sdlpop
 summary: Open Source Prince of Persia port.
 description: |
