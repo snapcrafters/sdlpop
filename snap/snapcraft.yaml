@@ -1,3 +1,4 @@
+base: core
 name: sdlpop
 summary: Open Source Prince of Persia port.
 description: |
@@ -61,6 +62,7 @@ parts:
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
+      - libsdl2-image-2.0-0
     override-pull: |
       snapcraftctl pull
 
@@ -82,3 +84,12 @@ parts:
     plugin: dump
     source: patches
     prime: [-*]
+
+  desktop-glib-only:
+    build-packages:
+    - libglib2.0-dev
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    stage-packages:
+    - libglib2.0-bin
