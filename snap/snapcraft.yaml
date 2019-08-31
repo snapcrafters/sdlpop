@@ -1,8 +1,38 @@
+base: core18
 name: sdlpop
-summary: SDLPoP
+title: SDLPoP
+summary: Open Source Prince of Persia port.
 description: |
-  An open-source port of Prince of Persia, based on the disassembly of the 
+  An open-source port of the 1989 "Prince of Persia" video game, based on the disassembly of the 
   DOS version.
+
+  Controlling the kid:
+
+    * left: turn or run left
+    * right: turn or run right
+    * up: jump or climb up
+    * down: crouch or climb down
+    * shift: pick up things
+    * shift+left/right: careful step
+    * home or up+left: jump left
+    * page up or up+right: jump right
+
+  You can also use the numeric keypad.
+
+  Gamepad equivalents:
+
+  * D-Pad: arrows
+  * Joystick: left/right
+  * A: down
+  * Y: up
+  * X or triggers: shift
+  * Start or Back: display in-game menu
+
+  You can find more information and controls in the SDLPoP readme: <https://github.com/NagyD/SDLPoP/tree/master/doc>.
+
+  This snap is maintained by the Snapcrafters community, and is not necessarily
+  endorsed or officially maintained by the upstream developers.
+license: "GPL-3.0"
 adopt-info: sdlpop
 
 grade: stable
@@ -19,6 +49,7 @@ apps:
       - opengl
       - pulseaudio
       - screen-inhibit-control
+      - joystick
 
 parts:
   sdlpop:
@@ -33,6 +64,7 @@ parts:
       - libgl1-mesa-dri
       - libgl1-mesa-glx
       - libglu1-mesa
+      - libsdl2-image-2.0-0
     override-pull: |
       snapcraftctl pull
 
@@ -54,3 +86,12 @@ parts:
     plugin: dump
     source: patches
     prime: [-*]
+
+  desktop-glib-only:
+    build-packages:
+    - libglib2.0-dev
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: glib-only
+    stage-packages:
+    - libglib2.0-bin
