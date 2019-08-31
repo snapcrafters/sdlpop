@@ -1,5 +1,6 @@
 base: core18
 name: sdlpop
+title: SDLPoP
 summary: Open Source Prince of Persia port.
 description: |
   An open-source port of the 1989 "Prince of Persia" video game, based on the disassembly of the 
@@ -31,6 +32,7 @@ description: |
 
   This snap is maintained by the Snapcrafters community, and is not necessarily
   endorsed or officially maintained by the upstream developers.
+license: "GPL-3.0"
 adopt-info: sdlpop
 
 grade: stable
