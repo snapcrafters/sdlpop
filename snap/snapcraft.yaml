@@ -40,12 +40,11 @@ confinement: strict
 
 apps:
   sdlpop:
-    command: desktop-launch $SNAP/prince
+    command: wrapper
     plugs:
       - unity7
       - network
       - network-bind
-      - home
       - opengl
       - pulseaudio
       - screen-inhibit-control
@@ -86,6 +85,12 @@ parts:
     plugin: dump
     source: patches
     prime: [-*]
+
+  scripts:
+    plugin: dump
+    source: scripts
+    organize:
+      'prepare': bin/
 
   desktop-glib-only:
     build-packages:

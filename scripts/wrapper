@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Make sure SDLPoP reads and writes files from $SNAP_USER_COMMON instead of PWD.
+cd $SNAP_USER_COMMON
+
+# Make sure SDLPoP.cfg file exists, otherwise SDLPoP tries to create it in the
+# same directory as the binary. Don't touch it if it exists, because SDLPoP
+# uses the timestamp to reset SDLPoP.cfg when SDLPoP.ini changes.
+if [ ! -f SDLPoP.cfg ]; then
+    touch SDLPoP.cfg
+fi
+
+# Run the game
+exec $SNAP/bin/desktop-launch $SNAP/prince  "${@:1}"
