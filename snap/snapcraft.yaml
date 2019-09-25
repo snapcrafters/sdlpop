@@ -14,7 +14,8 @@ description: |
     * down: crouch or climb down
     * shift: pick up things
     * shift+left/right: careful step
-    * home or up+left: jump left
+    * shift while falling: grab onto ledge
+    * home or up+left: jump left    
     * page up or up+right: jump right
 
   You can also use the numeric keypad.
