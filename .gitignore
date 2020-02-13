@@ -1,6 +1,8 @@
 # gitginore template for creating Snap packages
 # website: https://snapcraft.io/
 
+squashfs-root
+
 parts/
 prime/
 stage/

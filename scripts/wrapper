@@ -10,5 +10,5 @@ if [ ! -f SDLPoP.cfg ]; then
     touch SDLPoP.cfg
 fi
 
-# Run the game
-exec $SNAP/bin/desktop-launch $SNAP/prince  "${@:1}"
+# run the rest of the command chain
+exec "$@"
