@@ -36,6 +36,9 @@ license: "GPL-3.0"
 adopt-info: sdlpop
 grade: stable
 
+architectures:
+  - build-on: [i386, amd64, armhf, arm64]
+
 base: core18
 confinement: strict
 
