@@ -42,13 +42,13 @@ architectures:
   - build-on: armhf
   - build-on: arm64
 
-base: core18
+base: core20
 confinement: strict
 
 apps:
   sdlpop:
     extensions:
-      - gnome-3-28
+      - gnome-3-38
     command: prince
     command-chain:
       - bin/wrapper
@@ -109,9 +109,9 @@ parts:
       plugin: nil
       build-snaps:  # List all content-snaps and base snaps you're using here
         - core18
-        - gnome-3-28-1804
+        - gnome-3-38-2004
       override-prime: |
         set -eux
-        for snap in "core18" "gnome-3-28-1804"; do  # List all content-snaps and base snaps you're using here
+        for snap in "core20" "gnome-3-38-2004"; do  # List all content-snaps and base snaps you're using here
           cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
         done
