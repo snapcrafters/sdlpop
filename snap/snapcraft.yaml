@@ -35,6 +35,7 @@ description: |
 license: "GPL-3.0"
 adopt-info: sdlpop
 grade: stable
+compression: lzo
 
 architectures:
   - build-on: i386
