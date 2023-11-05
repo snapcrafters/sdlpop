@@ -38,31 +38,27 @@ grade: stable
 compression: lzo
 
 architectures:
-  - build-on: i386
   - build-on: amd64
-  - build-on: armhf
   - build-on: arm64
 
-base: core18
+base: core22
 confinement: strict
 
 apps:
   sdlpop:
     extensions:
-      - gnome-3-28
+      - gnome
     command: prince
     command-chain:
       - bin/wrapper
     plugs:
       - opengl
       - audio-playback
-      - pulseaudio      # Only here to support older snapd versions.
       - screen-inhibit-control
       - joystick
 
 parts:
   sdlpop:
-    after: [patches]
     plugin: make
     source: https://github.com/NagyD/SDLPoP.git
     source-type: git
@@ -75,7 +71,7 @@ parts:
       - libglu1-mesa
       - libsdl2-image-2.0-0
     override-pull: |
-      snapcraftctl pull
+      craftctl default
 
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag=v"$(snap info sdlpop | awk '$1 == "latest/beta:" { print $2 }')"
@@ -85,16 +81,16 @@ parts:
         git fetch
         git checkout "${last_committed_tag}"
       fi
-      snapcraftctl set-version "$(git describe --tags | tr -d 'v')"
-      git apply $SNAPCRAFT_STAGE/install.patch
+      craftctl set version="$(git describe --tags | tr -d 'v')"
     override-build: |
-      snapcraftctl build
-      cp -a * $SNAPCRAFT_PART_INSTALL/
+      craftctl default
+      cp -a * $CRAFT_PART_INSTALL/
 
-  patches:
-    plugin: dump
-    source: patches
-    prime: [-*]
+    prime:
+      - -usr/lib/$CRAFT_ARCH_TRIPLET/libwayland-client.so.0.20.0
+      - -usr/lib/$CRAFT_ARCH_TRIPLET/libwayland-cursor.so.0.20.0
+      - -usr/lib/$CRAFT_ARCH_TRIPLET/libwayland-egl.so.1.20.0
+      - -usr/lib/$CRAFT_ARCH_TRIPLET/libwayland-server.so.0.20.0
 
   scripts:
     plugin: dump
@@ -103,16 +99,10 @@ parts:
       'wrapper': bin/wrapper
 
   cleanup:
-      after:  # Make this part run last; list all your other parts here
-        - sdlpop
-        - patches
-        - scripts
-      plugin: nil
-      build-snaps:  # List all content-snaps and base snaps you're using here
-        - core18
-        - gnome-3-28-1804
-      override-prime: |
-        set -eux
-        for snap in "core18" "gnome-3-28-1804"; do  # List all content-snaps and base snaps you're using here
-          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
-        done
+    after: [sdlpop]
+    plugin: nil
+    build-snaps: [ gnome-42-2204 ]
+    override-prime: |
+      set -eux
+      cd /snap/gnome-42-2204/current
+      find . -type f,l -exec rm -f $CRAFT_PRIME/{} \;
